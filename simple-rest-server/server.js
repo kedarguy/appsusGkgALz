@@ -26,7 +26,7 @@ let puki = {
 let shuki= {
     userEmail: 'shuki@shuki.com',
     emails: [
-        {from: puki.userEmail, subject: 'fesavs', content: 'dsvasv'},
+        {from: puki.userEmail, subject: '1', content: '1'},
         {from: puki.userEmail, subject: '2', content: '2'},
         {from: puki.userEmail, subject: '3', content: '3'},
         {from: puki.userEmail, subject: '4', content: '4'},
@@ -35,7 +35,16 @@ let shuki= {
 
 let users = [puki, shuki];
 
-let currUser = shuki;
+let loggedInUser = shuki;
+
+function getUserByEmail(emailAddress) {
+  console.log('Email add')
+  console.log(emailAddress)
+    var answer = users.find(function (searchUser) { 
+    return searchUser.userEmail === emailAddress})
+    return answer;
+}
+
 // *** REST API ***
 
 app.get('/h', (request, response) => {  
@@ -53,7 +62,7 @@ console.log('getting users')
 app.get('/currUser', (req, res) => {
   console.log('getting curr user')
 //   setTimeout(()=>res.json(items), 2000);
-    res.json(currUser);
+    res.json(loggedInUser);
 })
 
 
@@ -72,11 +81,13 @@ app.delete('/item/:id', (req, res) => {
 })
 
 // CREATE
-app.post('/item', (req, res) => {
-  const item =  req.body; 
-  item.id = findNextId();
-  items.push(item);
-  res.json({msg: 'Item was added!'});
+app.post('/newEmail', (req, res) => {
+    const email =  req.body; 
+    email.from = loggedInUser.userEmail;
+    loggedInUser.emails.push(email);
+    var recieverUser = getUserByEmail(email.to);
+    recieverUser.emails.push(email);
+  res.json({msg: 'email was sent!'});
 })
 
 // TODO: UPDATE

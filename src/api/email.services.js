@@ -1,5 +1,9 @@
+
 const urlUsers = 'http://localhost:3003/users';
 const urlCurrUser = 'http://localhost:3003/currUser';
+const urlNewEmail = 'http://localhost:3003/newEmail';
+
+import axios from 'axios'
 
 // var puki = {
 //     userEmail: 'puki@puki.com',
@@ -42,8 +46,9 @@ function getCurrUser() {
     var prmCurrUser = fetch(urlCurrUser);
 
     return prmCurrUser.then(res => res.json())
-    
+
 }
+
 
 function getEmails(user) {
     return user.emails
@@ -52,18 +57,18 @@ function getEmails(user) {
 //curruntly supporting only one address to send to
 function sendEmail(email) {
     console.log(email);
-    var currUser = getCurrUser();
-    email.from = currUser.userEmail;
-    currUser.emails.push(email);
-    var recieverUser = getUserByEmail(email.to);
-    recieverUser.emails.push(email);
-    console.log('email to: ');
-    console.log(recieverUser);
+    // return $.post(urlNewEmail, 'test')
+    //     .then(msg => console.log(msg));
+    axios.post(urlNewEmail, email)
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
-function getUserByEmail(emailAddress) {
-    return prmUsers.find(currUser => currUser.userEmail === emailAddress)
-}
+
 
 export default {
     getEmails,
