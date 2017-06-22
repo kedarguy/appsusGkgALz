@@ -1,7 +1,13 @@
 <template>
   <div class="email-preview">
     <h1>Hello Email Preview</h1>
-    <div>{{email}}</div>
+    <div v-if="email">
+      from: {{email.from}}
+      to: {{email.to}}
+      subject: {{email.subject}}
+      content: {{email.content}}
+
+    </div>
   </div>
 </template>
 

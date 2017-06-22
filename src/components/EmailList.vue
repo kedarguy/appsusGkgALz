@@ -16,8 +16,11 @@ import EmailService from '../api/email.services'
 export default {
   name: 'email-list',
   created() {
-    this.currUser = EmailService.getCurrUser();
-    this.emails = EmailService.getEmails(this.currUser);
+    var then = this;
+  EmailService.getCurrUser().then(function (servCurrUser)  {
+        then.currUser = servCurrUser;
+        then.emails = then.currUser.emails;
+    })  
   },
   data() {
     return {
