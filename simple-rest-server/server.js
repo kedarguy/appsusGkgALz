@@ -26,10 +26,10 @@ let puki = {
 let shuki = {
   userEmail: 'shuki@shuki.com',
   emails: [
-    { id: 1 ,from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false },
-    { id: 2 ,from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false },
-    { id: 3 ,from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false },
-    { id: 4 ,from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false },
+    { id: 1 ,from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false, isRead: false},
+    { id: 2 ,from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false, isRead: false},
+    { id: 3 ,from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false, isRead: false},
+    { id: 4 ,from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false, isRead: false},
   ]
 }
 
@@ -67,31 +67,21 @@ app.get('/currUser', (req, res) => {
 })
 
 
-// READ
-app.get('/item/:id', (req, res) => {
-  const id = +req.params.id;
-  const item = items.find(currItem => currItem.id === id);
-  res.json(item)
-})
 
-// TODO: DELETE
-app.delete('/item/:id', (req, res) => {
-  const id = +req.params.id;
-  items = items.filter(currItem => currItem.id !== id);
-  res.json({ msg: 'Deleted' });
-})
 
 // CREATE
 app.post('/newEmail', (req, res) => {
   const email = req.body;
   email.from = loggedInUser.userEmail;
+  email.isTrashed = false;
+  email.isImportant = false;
   loggedInUser.emails.push(email);
   var recieverUser = getUserByEmail(email.to);
   recieverUser.emails.push(email);
   res.json({ msg: 'email was sent!' });
 })
 
-// UPDATE
+// UPDATE - trashMail
 app.put('/trash', (req, res) => {
   const email = req.body;
   console.log('email from', email.from)
@@ -99,10 +89,27 @@ app.put('/trash', (req, res) => {
   console.log('logged in emails', loggedInUser.emails);
   var answer = loggedInUser.emails.find(function (searchEmail) {
     return searchEmail.id === email.id})
-  answer.isTrashed = true;
+  answer.isTrashed = !answer.isTrashed;
+  answer.isImportant = !answer.isImportant;
   console.log(loggedInUser.emails);
   res.json({ msg: 'Item was updates!' });
 })
+
+// UPDATE - toggleTags
+app.put('/toggleTags', (req, res) => {
+  const email = req.body;
+  console.log('email from', email.from)
+  console.log(email);
+  console.log('logged in emails', loggedInUser.emails);
+  var answer = loggedInUser.emails.find(function (searchEmail) {
+    return searchEmail.id === email.id})
+  answer.isImportant = email.isImportant;
+  answer.isTrashed = email.isTrashed;
+  answer.isRead = email.isRead;
+  console.log(loggedInUser.emails);
+  res.json({ msg: 'Item was updates!' });
+})
+
 
 app.listen(3003, () => {
   console.log('REST API listening on port 3003!')
@@ -118,3 +125,16 @@ function findNextId() {
 
 
 
+// READ
+app.get('/item/:id', (req, res) => {
+  const id = +req.params.id;
+  const item = items.find(currItem => currItem.id === id);
+  res.json(item)
+})
+
+// TODO: DELETE
+app.delete('/item/:id', (req, res) => {
+  const id = +req.params.id;
+  items = items.filter(currItem => currItem.id !== id);
+  res.json({ msg: 'Deleted' });
+})

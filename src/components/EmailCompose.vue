@@ -56,5 +56,6 @@ export default {
 
 input {
   display: block;
+  width: 70vw;
 }
 </style>

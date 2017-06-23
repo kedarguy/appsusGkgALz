@@ -8,6 +8,7 @@
       > </email-list>
       <section>
         <email-preview v-if="!isComposeNewMode" :email="currPrevEmail"
+                        @toggleTags="emailToggleTags"
                         @replyEmail="replyEmail"
         > </email-preview>
         <email-compose v-if="isComposeMode" :addressToSend="emailTo"
@@ -38,6 +39,11 @@ export default {
   methods: {
     updatePreviewEmail(email) {
       this.currPrevEmail = email;
+    },
+    emailToggleTags(email) {
+      this.currPrevEmail.isImportant = email.isImportant;
+      this.currPrevEmail.isRead = email.isRead;
+      this.currPrevEmail.isTrashed = email.isTrashed;
     },
     composeNewEmail() {
       this.emailTo = null;

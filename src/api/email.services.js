@@ -3,6 +3,7 @@ const urlUsers = 'http://localhost:3003/users';
 const urlCurrUser = 'http://localhost:3003/currUser';
 const urlNewEmail = 'http://localhost:3003/newEmail';
 const urlTrashEmail = 'http://localhost:3003/trash';
+const urltoggleTags = 'http://localhost:3003/toggleTags';
 
 import axios from 'axios'
 
@@ -66,6 +67,19 @@ function trashEmail(email) {
         });
 }
 
+function toggleTags(email, updateField) {
+    console.log("marking email important", email);
+    axios.put(urltoggleTags, email)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+
+
 function replyEmail(email) {
     console.log("reply email");
 }
@@ -91,5 +105,6 @@ export default {
     getCurrUser,
     sendEmail,
     trashEmail,
-    replyEmail
+    replyEmail,
+    toggleTags
 }
