@@ -22,6 +22,15 @@ export default {
         then.emails = then.currUser.emails;
     })  
   },
+  watch: { 
+    emails: function () {
+        var then = this;
+        EmailService.getCurrUser().then(function (servCurrUser)  {
+        then.currUser = servCurrUser;
+        then.emails = then.currUser.emails;
+      })
+    }
+  },
   data() {
     return {
       emails: null,
