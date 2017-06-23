@@ -12,9 +12,16 @@
 
 <script>
 import EmailService from '../api/email.services'
+import { bus } from '../main';
+
 
 export default {
   name: 'email-compose',
+  props: ['addressToSend'],
+  created() {
+    if(this.addressToSend) this.emailToEdit.to = this.addressToSend;    
+    // bus.$on('replayEmail', (email) => {this.emailToEdit.to = email.from})
+  },
   data() {
     return {
       emailToEdit: {
@@ -30,10 +37,10 @@ export default {
     },
     sendEmail() {
       EmailService.sendEmail(this.emailToEdit);
-      this.$emit('closeComposeMode');
+      this.$emit('toggleComposeMode');
     },
-    closeComposeModeEmail() {
-      this.$emit('closeComposeMode');
+    discardEmail() {
+      this.$emit('toggleComposeMode');
     }
   },
 }
@@ -45,7 +52,6 @@ export default {
 .email-preview {
   background-color: lightgrey;
   border: 2px solid black;
-  width: 65%;
 }
 
 input {

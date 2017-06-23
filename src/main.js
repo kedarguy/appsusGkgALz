@@ -7,6 +7,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import * as VueGoogleMaps from 'vue2-google-maps';
 
+
+// export const bus = new Vue();
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueGoogleMaps, {

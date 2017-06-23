@@ -6,13 +6,18 @@
       <email-list @updatePreviewEmail="updatePreviewEmail"
                   @composeEmail="composeNewEmail"
       > </email-list>
-      <email-preview v-if="!isComposeMode" :email="currPrevEmail"> </email-preview>
-      <email-compose v-if="isComposeMode" 
-                      @closeComposeMode="disableComposeMode"
-      > </email-compose>
+      <section>
+        <email-preview v-if="!isComposeNewMode" :email="currPrevEmail"
+                        @replyEmail="replyEmail"
+        > </email-preview>
+        <email-compose v-if="isComposeMode" :addressToSend="emailTo"
+                        @toggleComposeMode="toggleComposeMode"
+        > </email-compose>
+      </section>
     </div>
   </div>
 </template>
+
 
 <script>
 import EmailNav from '@/components/EmailNav'
@@ -26,6 +31,8 @@ export default {
     return {
       currPrevEmail: null,
       isComposeMode: false,
+      isComposeNewMode: false,
+      emailTo: null,
     }
   },
   methods: {
@@ -33,11 +40,19 @@ export default {
       this.currPrevEmail = email;
     },
     composeNewEmail() {
+      this.emailTo = null;
+      this.isComposeNewMode = true;
       this.isComposeMode = true;
     },
-    disableComposeMode() {
-      this.isComposeMode = false;
+    toggleComposeMode() {
+      this.isComposeMode = !this.isComposeMode;
+      this.isComposeNewMode = !this.isComposeNewMode;
     },
+    replyEmail(emailAddress) {
+      this.emailTo = emailAddress.from;
+      this.isComposeMode = !this.isComposeMode;
+      this.isComposeNewMode = !this.isComposeNewMode;
+    }
   },
   components: {
     EmailNav,

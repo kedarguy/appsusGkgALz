@@ -14,16 +14,21 @@
 
 <script>
 import EmailService from '../api/email.services'
+// import { bus } from '../main';
 
 export default {
   name: 'email-preview',
   props: ['email'],
   methods: {
     trashEmail() {
+      this.$emit('replyEmail',this.email);
+      console.log(this.email)
       EmailService.trashEmail(this.email);
     },
     replyEmail() {
-      EmailService.replyEmail(this.email);
+      console.log('reply');
+      // bus.$emit('replayEmail',this.email);      
+      this.$emit('replyEmail',this.email);
     }
   }
 }
@@ -35,6 +40,6 @@ export default {
 .email-preview {
   background-color: lightgrey;
   border: 2px solid black;
-  width: 65%;
+  width: 50vw;
 }
 </style>
