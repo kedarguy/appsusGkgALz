@@ -1,22 +1,42 @@
 <template>
   <div class="places">
-    <h1>Hello Places</h1>
+    <section class="menu-cont">menu</section>
+    <section class="map-cont">
+    <google-map> </google-map>
+
+    </section>
   </div>
 </template>
 
 <script>
 
+import GoogleMap from '@/components/GoogleMap'
+
 export default {
   name: 'places-map',
+  components: {
+    GoogleMap
+  }
 }
+
+
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 .places {
-  
-  background-color: blue;
+  display: flex;
+  flex-direction: row;
+}
 
+.menu-cont {
+  width: 35%;
+  min-height: 500px;
+  background-color: lightgrey;
+}
+.map-cont {
+  width: 65%;
+  min-height: 500px;
+  background-color: lightblue;
 }
 </style>

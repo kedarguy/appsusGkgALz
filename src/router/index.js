@@ -7,7 +7,8 @@ import Places from '@/components/Places'
 import BookStore from '@/components/BookStore'
 
 
-Vue.use(Router)
+Vue.use(Router);
+
 
 
 export default new Router({
