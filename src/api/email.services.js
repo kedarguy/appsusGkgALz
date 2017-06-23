@@ -2,6 +2,7 @@
 const urlUsers = 'http://localhost:3003/users';
 const urlCurrUser = 'http://localhost:3003/currUser';
 const urlNewEmail = 'http://localhost:3003/newEmail';
+const urlTrashEmail = 'http://localhost:3003/trash';
 
 import axios from 'axios'
 
@@ -54,18 +55,33 @@ function getEmails(user) {
     return user.emails
 }
 
+function trashEmail(email) {
+    console.log("trashing email", email);
+    axios.put(urlTrashEmail, email)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function replyEmail(email) {
+    console.log("reply email");
+}
+
 //curruntly supporting only one address to send to
 function sendEmail(email) {
     console.log(email);
     // return $.post(urlNewEmail, 'test')
     //     .then(msg => console.log(msg));
     axios.post(urlNewEmail, email)
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 
@@ -73,5 +89,7 @@ function sendEmail(email) {
 export default {
     getEmails,
     getCurrUser,
-    sendEmail
+    sendEmail,
+    trashEmail,
+    replyEmail
 }
