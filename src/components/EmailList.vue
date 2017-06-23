@@ -2,8 +2,7 @@
   <div class="email-list">
     <button class="compose-email" @click="composeEmail()">Compose </button>
     <ul>
-      <li v-for="currEmail in emails" 
-          @click="selectEmail(currEmail)">
+      <li v-for="currEmail in emails" @click="selectEmail(currEmail)">
         subject: {{currEmail.subject}}
       </li>
     </ul>
@@ -16,21 +15,22 @@ import EmailService from '../api/email.services'
 export default {
   name: 'email-list',
   created() {
-    var then = this;
-  EmailService.getCurrUser().then(function (servCurrUser)  {
-        then.currUser = servCurrUser;
-        then.emails = then.currUser.emails;
-    })  
+    var tempThis = this;
+    EmailService.getCurrUser().then(function (servCurrUser) {
+      tempThis.currUser = servCurrUser;
+      tempThis.emails = tempThis.currUser.emails;
+      tempThis.selectEmail(tempThis.emails[0])
+    })
   },
-  watch: { 
-    emails: function () {
-        var then = this;
-        EmailService.getCurrUser().then(function (servCurrUser)  {
-        then.currUser = servCurrUser;
-        then.emails = then.currUser.emails;
-      })
-    }
-  },
+  // watch: {
+  //   emails: function () {
+  //     var then = this;
+  //     EmailService.getCurrUser().then(function (servCurrUser) {
+  //       then.currUser = servCurrUser;
+  //       then.emails = then.currUser.emails;
+  //     })
+  //   }
+  // },
   data() {
     return {
       emails: null,
@@ -38,10 +38,9 @@ export default {
     }
   },
   methods: {
-
     selectEmail(email) {
       console.log('emiting email')
-     this.$emit('updatePreviewEmail', email);
+      this.$emit('updatePreviewEmail', email);
     },
     composeEmail() {
       console.log('emiting start Compose')

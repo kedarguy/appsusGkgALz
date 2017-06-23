@@ -13,13 +13,13 @@ export default {
     selectEmail(email) {
       this.selectedBook = book;
     },
-}
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .email {
-    background-color: white;
-    border: 2px solid black;
-  }
+.email {
+  background-color: white;
+  border: 2px solid black;
+}
 </style>

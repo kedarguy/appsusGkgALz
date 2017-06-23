@@ -17,20 +17,20 @@ app.use(bodyParser.json());
 //     {id: 8,title: 'Mastering SCSS', price: 78, description: 'bla bla'},
 //     {id: 9,title: 'Mastering $', price: 8, description: 'jq bla bla'}
 // ];
-
+let currId = 5;
 let puki = {
-    userEmail: 'puki@puki.com',
-    emails: [ ]
+  userEmail: 'puki@puki.com',
+  emails: []
 }
 
-let shuki= {
-    userEmail: 'shuki@shuki.com',
-    emails: [
-        {from: puki.userEmail, subject: '1', content: '1'},
-        {from: puki.userEmail, subject: '2', content: '2'},
-        {from: puki.userEmail, subject: '3', content: '3'},
-        {from: puki.userEmail, subject: '4', content: '4'},
-    ]
+let shuki = {
+  userEmail: 'shuki@shuki.com',
+  emails: [
+    { id: 1 ,from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false },
+    { id: 2 ,from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false },
+    { id: 3 ,from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false },
+    { id: 4 ,from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false },
+  ]
 }
 
 let users = [puki, shuki];
@@ -40,29 +40,30 @@ let loggedInUser = shuki;
 function getUserByEmail(emailAddress) {
   console.log('Email add')
   console.log(emailAddress)
-    var answer = users.find(function (searchUser) { 
-    return searchUser.userEmail === emailAddress})
-    return answer;
+  var answer = users.find(function (searchUser) {
+    return searchUser.userEmail === emailAddress
+  })
+  return answer;
 }
 
 // *** REST API ***
 
-app.get('/h', (request, response) => {  
+app.get('/h', (request, response) => {
   response.send('Hello from Express!')
 })
 
 
 // LIST
 app.get('/users', (req, res) => {
-//   setTimeout(()=>res.json(items), 2000);
-console.log('getting users')
-    res.json(users);
+  //   setTimeout(()=>res.json(items), 2000);
+  console.log('getting users')
+  res.json(users);
 })
 
 app.get('/currUser', (req, res) => {
   console.log('getting curr user')
-//   setTimeout(()=>res.json(items), 2000);
-    res.json(loggedInUser);
+  //   setTimeout(()=>res.json(items), 2000);
+  res.json(loggedInUser);
 })
 
 
@@ -73,28 +74,34 @@ app.get('/item/:id', (req, res) => {
   res.json(item)
 })
 
-// DELETE
+// TODO: DELETE
 app.delete('/item/:id', (req, res) => {
   const id = +req.params.id;
   items = items.filter(currItem => currItem.id !== id);
-  res.json({msg: 'Deleted'});
+  res.json({ msg: 'Deleted' });
 })
 
 // CREATE
 app.post('/newEmail', (req, res) => {
-    const email =  req.body; 
-    email.from = loggedInUser.userEmail;
-    loggedInUser.emails.push(email);
-    var recieverUser = getUserByEmail(email.to);
-    recieverUser.emails.push(email);
-  res.json({msg: 'email was sent!'});
+  const email = req.body;
+  email.from = loggedInUser.userEmail;
+  loggedInUser.emails.push(email);
+  var recieverUser = getUserByEmail(email.to);
+  recieverUser.emails.push(email);
+  res.json({ msg: 'email was sent!' });
 })
 
-// TODO: UPDATE
-app.put('/item', (req, res) => {
-  const item =  req.body; 
-  items = items.map(currItem => (currItem.id === item.id)? item: currItem);
-  res.json({msg: 'Item was updates!'});
+// UPDATE
+app.put('/trash', (req, res) => {
+  const email = req.body;
+  console.log('email from', email.from)
+  console.log(email);
+  console.log('logged in emails', loggedInUser.emails);
+  var answer = loggedInUser.emails.find(function (searchEmail) {
+    return searchEmail.id === email.id})
+  answer.isTrashed = true;
+  console.log(loggedInUser.emails);
+  res.json({ msg: 'Item was updates!' });
 })
 
 app.listen(3003, () => {
@@ -102,11 +109,11 @@ app.listen(3003, () => {
 })
 
 function findNextId() {
-    var maxId = 0;
-    items.forEach(item => {
-        if (item.id > maxId) maxId = item.id;
-    });
-    return maxId + 1;
+  var maxId = 0;
+  items.forEach(item => {
+    if (item.id > maxId) maxId = item.id;
+  });
+  return maxId + 1;
 }
 
 
