@@ -14,7 +14,7 @@
         <email-list @updatePreviewEmail="updatePreviewEmail" :emails="filteredEmails" @composeEmail="composeNewEmail"> </email-list>
         <section>
           <email-preview v-if="!isComposeNewMode" :email="currPrevEmail" @toggleTags="emailToggleTags" @replyEmail="replyEmail"> </email-preview>
-          <email-compose v-if="isComposeMode" :addressToSend="emailTo" @sendNewEmail="sendEmail" @discardEmail="discardEmail"> </email-compose>
+          <email-compose v-if="isComposeMode" :emails="filteredEmails" :addressToSend="emailTo" @sendNewEmail="sendEmail" @discardEmail="discardEmail"> </email-compose>
         </section>
       </div>
     </section>
