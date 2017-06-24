@@ -17,7 +17,8 @@ export default {
   props: ['emails'],
   data() {
     return {
-      currUser: null
+      currUser: null,
+      
     }
   },
   methods: {

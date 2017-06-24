@@ -3,9 +3,11 @@
     <section class="log-in" v-if="!currUser">
       <input type="text" placeholder="email" v-model="inputEmailAddress">
       <input type="text" placeholder="password" v-model="inputPassword">
-  
       <button @click="logIn()"> log-in </button>
       <button @click="createNewUser()"> create new user </button>
+    </section>
+    <section class="log-out" v-if="currUser">
+      <button @click="logOut()"> Log-Out </button>
     </section>
     <section class="after-log-in" v-if="currUser">
       <email-nav @filterTags="emailsFilter">
@@ -33,9 +35,7 @@ import EmailService from '../api/email.services'
 
 export default {
   name: 'email-comp',
-  created() {
 
-  },
   // TODO: look for better solution for changes in list
   //   watch: {
   //   emails: function () {
@@ -65,6 +65,7 @@ export default {
       inputPassword: 1234, //change to null
     }
   },
+
   methods: {
     updatePreviewEmail(email) {
       this.currPrevEmail = email;
@@ -125,9 +126,26 @@ export default {
           tempThis.updateCurrUserAndEmails();
         })
     },
+    logOut() {
+
+      console.log('log out started');
+
+      let tempThis = this;
+      EmailService.logOutAttempt()
+        .then(function (tempUser) {
+          // tempThis.updateCurrUserAndEmails();
+          tempThis.currUser = null;
+        })
+    },
     createNewUser() {
       console.log('createNewUser started');
+
+      let tempThis = this;
       EmailService.CreateNewUserAttempt(this.inputEmailAddress, this.inputPassword)
+        .then(function (tempUser) {
+          tempThis.updateCurrUserAndEmails();
+        }
+        )
     }
   },
   components: {

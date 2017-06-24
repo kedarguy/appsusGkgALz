@@ -17,10 +17,13 @@ app.use(bodyParser.json());
 //     {id: 8,title: 'Mastering SCSS', price: 78, description: 'bla bla'},
 //     {id: 9,title: 'Mastering $', price: 8, description: 'jq bla bla'}
 // ];
+let system = {
+  userEmail: 'system@noreply.com',
+}
 let puki = {
   userEmail: 'puki@puki.com',
   pass: 1234,
-  emails: []
+  emails: [{ id: 1, from: system.userEmail, subject: 'Puki, Welcome To GZMail', content: 'Welcome To GZMail, This is your very first email', isTrashed: false, isImportant: false, isRead: false, isSent: false }]
 }
 
 let shuki = {
@@ -88,8 +91,9 @@ app.post('/newEmail', (req, res) => {
     sentEmail.id = recieverUser.emails.length + 1;
     recieverUser.emails.push(sentEmail);
     res.json({ msg: 'email was sent!' });
-  } else { res.status(777).send('email doesnt exist!')
-    }
+  } else {
+    res.status(777).send('email doesnt exist!')
+  }
 })
 
 // UPDATE - trashMail
@@ -121,6 +125,37 @@ app.put('/logIn', (req, res) => {
   } else {
     res.json({ msg: 'Log In not succesful' });
 
+  }
+
+})
+// UPDATE - logOut
+app.put('/logOut', (req, res) => {
+  console.log('logOut attempt');
+  loggedInUser = null;
+    res.json({ loggedInUser });
+  })
+  
+// UPDATE - newUser
+app.put('/newUser', (req, res) => {
+  const userCred = req.body;
+  console.log('New User attempt from', userCred.emailAddress, 'password: ', userCred.pass);
+  const isEmailTaken = users.includes(function (searchedUser) {
+    return searchedUser.userEmail === userCred.emailAddress
+  })
+  console.log(isEmailTaken);
+  if (isEmailTaken) {
+    res.json({ msg: 'email Taken' });
+
+  } else {
+    const tempUser = {
+        userEmail: userCred.emailAddress,
+        pass: userCred.pass,
+        emails: [{ id: 1, from: system.userEmail, subject: 'Welcome To GZMail', content: 'Welcome To GZMail, This is your very first email', isTrashed: false, isImportant: false, isRead: false, isSent: false }]
+      };
+    users.push(tempUser);
+    console.log(users);
+    loggedInUser = tempUser;
+    res.json({ loggedInUser });
   }
 
 })
