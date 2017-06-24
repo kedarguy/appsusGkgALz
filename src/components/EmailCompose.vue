@@ -1,7 +1,7 @@
 <template>
   <div class="email-compose">
     <form>
-      <input type="text" v-model="emailToEdit.to" placeholder="to" required>
+      <input type="text" v-model="emailToEdit.to" placeholder="to" :disabled="addressToSend">
       <input type="text" v-model="emailToEdit.subject" placeholder="subject">
       <el-input type="textarea" :rows="10" v-model="emailToEdit.content" placeholder="content"></el-input>
       <button @click="sendEmail()">Send</button>
@@ -19,15 +19,24 @@ export default {
   name: 'email-compose',
   props: ['addressToSend'],
   created() {
-    if(this.addressToSend) this.emailToEdit.to = this.addressToSend;    
+    if (this.addressToSend) {
+      this.emailToEdit.to = this.addressToSend;
+    } else this.emailToEdit.to = null;
     // bus.$on('replayEmail', (email) => {this.emailToEdit.to = email.from})
+  },
+  watch: {
+    addressToSend: function () {
+      if (this.addressToSend) {
+        this.emailToEdit.to = this.addressToSend;
+      } else this.emailToEdit.to = null;
+    }
   },
   data() {
     return {
       emailToEdit: {
         to: null,
         subject: null,
-        content: null
+        content: null,
       }
     }
   },

@@ -14,26 +14,9 @@ import EmailService from '../api/email.services'
 
 export default {
   name: 'email-list',
-  created() {
-    var tempThis = this;
-    EmailService.getCurrUser().then(function (servCurrUser) {
-      tempThis.currUser = servCurrUser;
-      tempThis.emails = tempThis.currUser.emails;
-      tempThis.selectEmail(tempThis.emails[0])
-    })
-  },
-  // watch: {
-  //   emails: function () {
-  //     var then = this;
-  //     EmailService.getCurrUser().then(function (servCurrUser) {
-  //       then.currUser = servCurrUser;
-  //       then.emails = then.currUser.emails;
-  //     })
-  //   }
-  // },
+  props: ['emails'],
   data() {
     return {
-      emails: null,
       currUser: null
     }
   },

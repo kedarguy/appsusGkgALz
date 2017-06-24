@@ -99,7 +99,6 @@ function sendEmail(email) {
 }
 
 
-
 export default {
     getEmails,
     getCurrUser,

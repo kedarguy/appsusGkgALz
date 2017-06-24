@@ -20,6 +20,15 @@ import EmailService from '../api/email.services'
 export default {
   name: 'email-preview',
   props: ['email'],
+  watch: {
+    email: function () {
+      if (this.email) {
+        !this.email.isImportant ? this.markImportant = "Mark as important" : this.markImportant = "Mark as Unimportant";
+        !this.email.isTrashed ? this.trashEmail = "Trash this mail" : this.trashEmail = "move to inbox";
+        !this.email.isRead ? this.markRead = "Mark as read" : this.markRead = "Mark as Unread";
+      }
+    }
+  },
   data() {
     return {
       markRead: 'Mark as read',
@@ -35,7 +44,6 @@ export default {
     },
     replyEmail() {
       console.log('reply');
-      // bus.$emit('replayEmail',this.email);      
       this.$emit('replyEmail', this.email);
     },
     toggleTags(tag) {
@@ -45,17 +53,17 @@ export default {
           this.email.isImportant ? this.markImportant = "Mark as important" : this.markImportant = "Mark as Unimportant"
           this.email.isImportant = !this.email.isImportant;
           break;
-          }
+        }
         case 'trash': {
           this.email.isTrashed ? this.trashEmail = "Trash this mail" : this.trashEmail = "move to inbox"
           this.email.isTrashed = !this.email.isTrashed;
           break;
-          }
+        }
         case 'read': {
           this.email.isRead ? this.markRead = "Mark as read" : this.markRead = "Mark as Unread"
           this.email.isRead = !this.email.isRead;
           break;
-          }
+        }
       }
       console.log('email over', this.email);
       EmailService.toggleTags(this.email);
