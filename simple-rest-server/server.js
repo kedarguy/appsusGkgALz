@@ -20,22 +20,24 @@ app.use(bodyParser.json());
 let currId = 5;
 let puki = {
   userEmail: 'puki@puki.com',
+  pass: 1234,
   emails: []
 }
 
 let shuki = {
   userEmail: 'shuki@shuki.com',
+  pass: 1234,
   emails: [
-    { id: 1 ,from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false, isRead: false},
-    { id: 2 ,from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false, isRead: false},
-    { id: 3 ,from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false, isRead: false},
-    { id: 4 ,from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false, isRead: false},
+    { id: 1, from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false, isRead: false },
+    { id: 2, from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false, isRead: false },
+    { id: 3, from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false, isRead: false },
+    { id: 4, from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false, isRead: false },
   ]
 }
 
 let users = [puki, shuki];
 
-let loggedInUser = shuki;
+let loggedInUser = null;
 
 function getUserByEmail(emailAddress) {
   console.log('Email add')
@@ -88,11 +90,30 @@ app.put('/trash', (req, res) => {
   console.log(email);
   console.log('logged in emails', loggedInUser.emails);
   var answer = loggedInUser.emails.find(function (searchEmail) {
-    return searchEmail.id === email.id})
+    return searchEmail.id === email.id
+  })
   answer.isTrashed = !answer.isTrashed;
   answer.isImportant = !answer.isImportant;
   console.log(loggedInUser.emails);
   res.json({ msg: 'Item was updates!' });
+})
+
+// UPDATE - logIn
+app.put('/logIn', (req, res) => {
+  const userCred = req.body;
+  console.log('logIn attempt from', userCred.emailAddress, 'password: ', userCred.pass);
+  const tempUser = users.find(function (searchedUser) {
+    return searchedUser.userEmail === userCred.emailAddress && searchedUser.pass === +userCred.pass
+  })
+  console.log(tempUser);
+  if (tempUser) {
+    loggedInUser = tempUser;
+    res.json({ msg: 'Log In succesful' });
+  } else {
+    res.json({ msg: 'Log In not succesful' });
+
+  }
+
 })
 
 // UPDATE - toggleTags
@@ -102,7 +123,8 @@ app.put('/toggleTags', (req, res) => {
   console.log(email);
   console.log('logged in emails', loggedInUser.emails);
   var answer = loggedInUser.emails.find(function (searchEmail) {
-    return searchEmail.id === email.id})
+    return searchEmail.id === email.id
+  })
   answer.isImportant = email.isImportant;
   answer.isTrashed = email.isTrashed;
   answer.isRead = email.isRead;

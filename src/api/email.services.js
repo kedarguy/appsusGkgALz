@@ -3,6 +3,7 @@ const urlUsers = 'http://localhost:3003/users';
 const urlCurrUser = 'http://localhost:3003/currUser';
 const urlNewEmail = 'http://localhost:3003/newEmail';
 const urlTrashEmail = 'http://localhost:3003/trash';
+const urlLogIn = 'http://localhost:3003/logIn';
 const urltoggleTags = 'http://localhost:3003/toggleTags';
 
 import axios from 'axios'
@@ -56,6 +57,28 @@ function getEmails(user) {
     return user.emails
 }
 
+function logInAttempt(emailAddress, pass) {
+    console.log(`email address: ${emailAddress}, password: ${pass}`);
+    const userCred = {emailAddress, pass};
+    axios.put(urlLogIn, userCred)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+function CreateNewUserAttempt(emailAdress, pass) {
+    console.log(`creating new user, email address: ${emailAdress}, password: ${pass}`);
+    // axios.put(urlTrashEmail, email)
+    //     .then(function (response) {
+    //         console.log(response);
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error);
+    //     });
+}
+
 function trashEmail(email) {
     console.log("trashing email", email);
     axios.put(urlTrashEmail, email)
@@ -105,5 +128,8 @@ export default {
     sendEmail,
     trashEmail,
     replyEmail,
-    toggleTags
+    toggleTags,
+    logInAttempt,
+    CreateNewUserAttempt
+
 }
