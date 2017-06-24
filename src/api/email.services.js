@@ -60,9 +60,9 @@ function getEmails(user) {
 function logInAttempt(emailAddress, pass) {
     console.log(`email address: ${emailAddress}, password: ${pass}`);
     const userCred = {emailAddress, pass};
-    axios.put(urlLogIn, userCred)
+   return axios.put(urlLogIn, userCred)
         .then(function (response) {
-            console.log(response);
+            return response.data.loggedInUser
         })
         .catch(function (error) {
             console.log(error);

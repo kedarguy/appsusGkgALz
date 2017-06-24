@@ -3,18 +3,18 @@
     <section class="log-in" v-if="!currUser">
       <input type="text" placeholder="email" v-model="inputEmailAddress">
       <input type="text" placeholder="password" v-model="inputPassword">
-
+  
       <button @click="logIn()"> log-in </button>
       <button @click="createNewUser()"> create new user </button>
     </section>
-    <section class="after-log-in" v-if="currUser"> 
+    <section class="after-log-in" v-if="currUser">
       <email-nav @filterTags="emailsFilter">
       </email-nav>
       <div class="main">
         <email-list @updatePreviewEmail="updatePreviewEmail" :emails="filteredEmails" @composeEmail="composeNewEmail"> </email-list>
         <section>
           <email-preview v-if="!isComposeNewMode" :email="currPrevEmail" @toggleTags="emailToggleTags" @replyEmail="replyEmail"> </email-preview>
-          <email-compose v-if="isComposeMode" :addressToSend="emailTo" @toggleComposeMode="toggleComposeMode"> </email-compose>
+          <email-compose v-if="isComposeMode" :addressToSend="emailTo" @sendNewEmail="sendEmail"> </email-compose>
         </section>
       </div>
     </section>
@@ -34,25 +34,15 @@ import EmailService from '../api/email.services'
 export default {
   name: 'email-comp',
   created() {
-    var tempThis = this;
-    EmailService.getCurrUser().then(function (servCurrUser) {
-      if (servCurrUser) {
-        tempThis.currUser = servCurrUser;
-        tempThis.emails = tempThis.currUser.emails;
-        tempThis.filteredEmails = tempThis.emails;
-        tempThis.currPrevEmail = tempThis.filteredEmails[0];
-      } else {
-        tempThis.currUser
-      }
-    })
+
   },
-  //   TODO: look for better solution for changes in list
+  // TODO: look for better solution for changes in list
   //   watch: {
   //   emails: function () {
-  //     var then = this;
+  //     let tempThis = this;
   //     EmailService.getCurrUser().then(function (servCurrUser) {
-  //       then.currUser = servCurrUser;
-  //       then.emails = then.currUser.emails;
+  //       tempThis.currUser = servCurrUser;
+  //       tempThis.emails = tempThis.currUser.emails;
   //     })
   //   }
   // },
@@ -84,9 +74,10 @@ export default {
       this.isComposeNewMode = true;
       this.isComposeMode = true;
     },
-    toggleComposeMode() {
+    sendEmail() {
       this.isComposeMode = !this.isComposeMode;
       this.isComposeNewMode = !this.isComposeNewMode;
+      this.updateCurrUserAndEmails();
     },
     replyEmail(emailAddress) {
       this.emailTo = emailAddress.from;
@@ -100,12 +91,31 @@ export default {
       else this.filteredEmails = this.emails.filter(function (email) { return email[tag] === true });
       this.currPrevEmail = this.filteredEmails[0];
     },
+    updateCurrUserAndEmails() {
+          let tempThis = this;
+          EmailService.getCurrUser().then(function (servCurrUser) {
+            if (servCurrUser) {
+              tempThis.currUser = servCurrUser;
+              tempThis.emails = tempThis.currUser.emails;
+              tempThis.filteredEmails = tempThis.emails;
+              tempThis.currPrevEmail = tempThis.filteredEmails[0];
+            } else {
+              tempThis.currUser
+            }
+          })
+    },
     logIn() {
-      console.log('login started'); 
+
+      console.log('login started');
+
+      let tempThis = this;
       EmailService.logInAttempt(this.inputEmailAddress, this.inputPassword)
+        .then(function (tempUser) {
+          tempThis.updateCurrUserAndEmails();
+        })
     },
     createNewUser() {
-      console.log('createNewUser started'); 
+      console.log('createNewUser started');
       EmailService.CreateNewUserAttempt(this.inputEmailAddress, this.inputPassword)
     }
   },

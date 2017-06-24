@@ -46,7 +46,7 @@ export default {
     },
     sendEmail() {
       EmailService.sendEmail(this.emailToEdit);
-      this.$emit('toggleComposeMode');
+      this.$emit('sendNewEmail');
     },
     discardEmail() {
       this.$emit('toggleComposeMode');

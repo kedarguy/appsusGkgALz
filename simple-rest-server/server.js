@@ -108,7 +108,7 @@ app.put('/logIn', (req, res) => {
   console.log(tempUser);
   if (tempUser) {
     loggedInUser = tempUser;
-    res.json({ msg: 'Log In succesful' });
+    res.json({ loggedInUser });
   } else {
     res.json({ msg: 'Log In not succesful' });
 
