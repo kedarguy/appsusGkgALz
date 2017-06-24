@@ -14,7 +14,7 @@
         <email-list @updatePreviewEmail="updatePreviewEmail" :emails="filteredEmails" @composeEmail="composeNewEmail"> </email-list>
         <section>
           <email-preview v-if="!isComposeNewMode" :email="currPrevEmail" @toggleTags="emailToggleTags" @replyEmail="replyEmail"> </email-preview>
-          <email-compose v-if="isComposeMode" :addressToSend="emailTo" @sendNewEmail="sendEmail"> </email-compose>
+          <email-compose v-if="isComposeMode" :addressToSend="emailTo" @sendNewEmail="sendEmail" @discardEmail="discardEmail"> </email-compose>
         </section>
       </div>
     </section>
@@ -54,6 +54,11 @@ export default {
       isComposeMode: false,
       isComposeNewMode: false,
       tagToFilter: 'Default',
+      composeNewMail: {
+        to: null,
+        subject: null,
+        content: null,
+      },
       emailTo: null,
       filteredEmails: {},
       inputEmailAddress: 'shuki@shuki.com',  //change to null
@@ -63,6 +68,10 @@ export default {
   methods: {
     updatePreviewEmail(email) {
       this.currPrevEmail = email;
+    },
+    toggleComposeMode() {
+      this.isComposeMode = !this.isComposeMode;
+      this.isComposeNewMode = !this.isComposeNewMode;
     },
     emailToggleTags(email) {
       this.currPrevEmail.isImportant = email.isImportant;
@@ -75,14 +84,16 @@ export default {
       this.isComposeMode = true;
     },
     sendEmail() {
-      this.isComposeMode = !this.isComposeMode;
-      this.isComposeNewMode = !this.isComposeNewMode;
+      this.toggleComposeMode()
       this.updateCurrUserAndEmails();
+    },
+    discardEmail() {
+      console.log('wee discard');
+      this.toggleComposeMode();
     },
     replyEmail(emailAddress) {
       this.emailTo = emailAddress.from;
-      this.isComposeMode = !this.isComposeMode;
-      this.isComposeNewMode = !this.isComposeNewMode;
+      this.toggleComposeMode();
     },
     emailsFilter(tag) {
       console.log('top comp', tag);
@@ -92,17 +103,17 @@ export default {
       this.currPrevEmail = this.filteredEmails[0];
     },
     updateCurrUserAndEmails() {
-          let tempThis = this;
-          EmailService.getCurrUser().then(function (servCurrUser) {
-            if (servCurrUser) {
-              tempThis.currUser = servCurrUser;
-              tempThis.emails = tempThis.currUser.emails;
-              tempThis.filteredEmails = tempThis.emails;
-              tempThis.currPrevEmail = tempThis.filteredEmails[0];
-            } else {
-              tempThis.currUser
-            }
-          })
+      let tempThis = this;
+      EmailService.getCurrUser().then(function (servCurrUser) {
+        if (servCurrUser) {
+          tempThis.currUser = servCurrUser;
+          tempThis.emails = tempThis.currUser.emails;
+          tempThis.filteredEmails = tempThis.emails;
+          tempThis.currPrevEmail = tempThis.filteredEmails[0];
+        } else {
+          tempThis.currUser
+        }
+      })
     },
     logIn() {
 

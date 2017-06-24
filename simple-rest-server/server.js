@@ -17,7 +17,6 @@ app.use(bodyParser.json());
 //     {id: 8,title: 'Mastering SCSS', price: 78, description: 'bla bla'},
 //     {id: 9,title: 'Mastering $', price: 8, description: 'jq bla bla'}
 // ];
-let currId = 5;
 let puki = {
   userEmail: 'puki@puki.com',
   pass: 1234,
@@ -28,10 +27,10 @@ let shuki = {
   userEmail: 'shuki@shuki.com',
   pass: 1234,
   emails: [
-    { id: 1, from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false, isRead: false },
-    { id: 2, from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false, isRead: false },
-    { id: 3, from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false, isRead: false },
-    { id: 4, from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false, isRead: false },
+    { id: 1, from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 2, from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 3, from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 4, from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false, isRead: false, isSent: false },
   ]
 }
 
@@ -74,12 +73,20 @@ app.get('/currUser', (req, res) => {
 // CREATE
 app.post('/newEmail', (req, res) => {
   const email = req.body;
+  console.log('****before***',email)
   email.from = loggedInUser.userEmail;
   email.isTrashed = false;
   email.isImportant = false;
+  email.isRead = false;
+  email.isSent = true;
+  email.id = loggedInUser.emails.length+1;
+  console.log('****************',email);
   loggedInUser.emails.push(email);
   var recieverUser = getUserByEmail(email.to);
-  recieverUser.emails.push(email);
+  var sentEmail = Object.assign({}, email);
+  sentEmail.isSent = false;
+  sentEmail.id = recieverUser.emails.length+1;
+  recieverUser.emails.push(sentEmail);
   res.json({ msg: 'email was sent!' });
 })
 

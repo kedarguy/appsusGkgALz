@@ -28,7 +28,11 @@ export default {
     addressToSend: function () {
       if (this.addressToSend) {
         this.emailToEdit.to = this.addressToSend;
-      } else this.emailToEdit.to = null;
+      } else {
+        this.emailToEdit.to = null;
+        this.emailToEdit.subject = null;
+        this.emailToEdit.content = null;
+      }
     }
   },
   data() {
@@ -41,15 +45,12 @@ export default {
     }
   },
   methods: {
-    composeNewEmail() {
-      console.log('blahblah new email');
-    },
     sendEmail() {
       EmailService.sendEmail(this.emailToEdit);
       this.$emit('sendNewEmail');
     },
     discardEmail() {
-      this.$emit('toggleComposeMode');
+      this.$emit('discardEmail');
     }
   },
 }
