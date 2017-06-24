@@ -56,8 +56,8 @@ export default {
       tagToFilter: 'Default',
       emailTo: null,
       filteredEmails: {},
-      inputEmailAddress: null,
-      inputPassword: null,
+      inputEmailAddress: 'shuki@shuki.com',  //change to null
+      inputPassword: 1234, //change to null
     }
   },
   methods: {

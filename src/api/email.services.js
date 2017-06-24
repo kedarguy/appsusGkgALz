@@ -59,8 +59,8 @@ function getEmails(user) {
 
 function logInAttempt(emailAddress, pass) {
     console.log(`email address: ${emailAddress}, password: ${pass}`);
-    const userCred = {emailAddress, pass};
-   return axios.put(urlLogIn, userCred)
+    const userCred = { emailAddress, pass };
+    return axios.put(urlLogIn, userCred)
         .then(function (response) {
             return response.data.loggedInUser
         })
@@ -90,9 +90,9 @@ function trashEmail(email) {
         });
 }
 
-function toggleTags(email, updateField) {
-    console.log("marking email important", email);
-    axios.put(urltoggleTags, email)
+function toggleTags(filter, updateField) {
+    console.log("marking filter", filter);
+    axios.put(urltoggleTags, filter)
         .then(function (response) {
             console.log(response);
         })

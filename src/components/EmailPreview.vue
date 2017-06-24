@@ -1,14 +1,14 @@
 <template>
   <div class="email-preview">
     <div v-if="email">
-      <h1>subject: {{email.subject}}</h1>
-      <h2>from: {{email.from}}</h2>
-      <h3>content: {{email.content}}</h3>
-      <button @click="replyEmail()">Reply</button>
-      <button @click="toggleTags('read')" v-model="markRead">{{markRead}}</button>
-      <button @click="toggleTags('trash')" v-model="trashEmail">{{trashEmail}}</button>
-      <button @click="toggleTags('important')" v-model="markImportant">{{markImportant}}</button>
-    </div>
+        <h1>subject: {{email.subject}}</h1>
+        <h2>from: {{email.from}}</h2>
+        <h3>content: {{email.content}}</h3>
+        <button @click="replyEmail()">Reply</button>
+        <button @click="toggleTags('read')" v-model="markRead">{{markRead}}</button>
+        <button @click="toggleTags('trash')" v-model="trashEmail">{{trashEmail}}</button>
+        <button @click="toggleTags('important')" v-model="markImportant">{{markImportant}}</button>
+      </div>
   </div>
 </template>
 
@@ -33,7 +33,13 @@ export default {
     return {
       markRead: 'Mark as read',
       trashEmail: "Trash this mail",
-      markImportant: "Mark as important"
+      markImportant: "Mark as important",
+      filter: {
+        id: this.email.id,
+        isImportant: this.email.isImportant,
+        isTrashed: this.email.isTrashed,
+        isRead: this.email.isRead
+      }
     }
   },
   methods: {
@@ -47,27 +53,27 @@ export default {
       this.$emit('replyEmail', this.email);
     },
     toggleTags(tag) {
-      console.log('before', this.email);
+      console.log('before', this.filter);
       switch (tag) {
         case 'important': {
           this.email.isImportant ? this.markImportant = "Mark as important" : this.markImportant = "Mark as Unimportant"
-          this.email.isImportant = !this.email.isImportant;
+          this.filter.isImportant = !this.email.isImportant;
           break;
         }
         case 'trash': {
-          this.email.isTrashed ? this.trashEmail = "Trash this mail" : this.trashEmail = "move to inbox"
-          this.email.isTrashed = !this.email.isTrashed;
+          this.email.isTrashed ? this.isTrashed = "Mark as important" : this.isTrashed = "Mark as Unimportant"
+          this.filter.isTrashed = !this.email.isTrashed;
           break;
         }
         case 'read': {
           this.email.isRead ? this.markRead = "Mark as read" : this.markRead = "Mark as Unread"
-          this.email.isRead = !this.email.isRead;
+          this.filter.isRead = !this.email.isRead;
           break;
         }
       }
-      console.log('email over', this.email);
-      EmailService.toggleTags(this.email);
-      this.$emit('toggleTags', this.email);
+      console.log('email over', this.filter);
+      EmailService.toggleTags(this.filter);
+      this.$emit('toggleTags', this.filter);
     }
   }
 }
