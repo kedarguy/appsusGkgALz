@@ -6,7 +6,7 @@
         <h3>content: {{email.content}}</h3>
         <button @click="replyEmail()">Reply</button>
         <button @click="toggleTags('read')" v-model="markRead">{{markRead}}</button>
-        <button @click="toggleTags('trash')" v-model="trashEmail">{{trashEmail}}</button>
+        <button @click="toggleTags('trash')" v-model="trashedEmail">{{trashedEmail}}</button>
         <button @click="toggleTags('important')" v-model="markImportant">{{markImportant}}</button>
       </div>
   </div>
@@ -24,7 +24,7 @@ export default {
     email: function () {
       if (this.email) {
         !this.email.isImportant ? this.markImportant = "Mark as important" : this.markImportant = "Mark as Unimportant";
-        !this.email.isTrashed ? this.trashEmail = "Trash this mail" : this.trashEmail = "move to inbox";
+        !this.email.isTrashed ? this.trashedEmail = "Trash this mail" : this.trashedEmail = "Move to inbox";
         !this.email.isRead ? this.markRead = "Mark as read" : this.markRead = "Mark as Unread";
       }
     }
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       markRead: 'Mark as read',
-      trashEmail: "Trash this mail",
+      trashedEmail: "Trash this mail",
       markImportant: "Mark as important",
       filter: {
         id: this.email.id,
@@ -61,7 +61,7 @@ export default {
           break;
         }
         case 'trash': {
-          this.email.isTrashed ? this.isTrashed = "Mark as important" : this.isTrashed = "Mark as Unimportant"
+          this.email.isTrashed ? this.trashedEmail = "Trash this mail" : this.trashedEmail = "Move to inbox";
           this.filter.isTrashed = !this.email.isTrashed;
           break;
         }
