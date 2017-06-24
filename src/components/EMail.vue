@@ -84,9 +84,9 @@ export default {
       this.isComposeNewMode = true;
       this.isComposeMode = true;
     },
-    sendEmail() {
-      this.toggleComposeMode()
-      this.updateCurrUserAndEmails();
+    sendEmail(updatedUser) {
+      this.toggleComposeMode();
+      this.currUser = updatedUser;
     },
     discardEmail() {
       console.log('wee discard');

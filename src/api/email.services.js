@@ -119,14 +119,14 @@ function replyEmail(email) {
     console.log("reply email");
 }
 
-//curruntly supporting only one address to send to
+//curruntly supporting only one address at a time
 function sendEmail(email) {
     console.log(email);
     // return $.post(urlNewEmail, 'test')
     //     .then(msg => console.log(msg));
-    axios.post(urlNewEmail, email)
+   return axios.post(urlNewEmail, email)
         .then(function (response) {
-            console.log(response);
+            return response.data.loggedInUser;
         })
         .catch(function (error) {
             alert('No such email in our records. email wasnt sent.');

@@ -90,7 +90,7 @@ app.post('/newEmail', (req, res) => {
     sentEmail.isSent = false;
     sentEmail.id = recieverUser.emails.length + 1;
     recieverUser.emails.push(sentEmail);
-    res.json({ msg: 'email was sent!' });
+    res.json({ loggedInUser });
   } else {
     res.status(777).send('email doesnt exist!')
   }
@@ -134,7 +134,7 @@ app.put('/logOut', (req, res) => {
   loggedInUser = null;
     res.json({ loggedInUser });
   })
-  
+
 // UPDATE - newUser
 app.put('/newUser', (req, res) => {
   const userCred = req.body;
