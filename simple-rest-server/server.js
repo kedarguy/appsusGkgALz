@@ -73,21 +73,23 @@ app.get('/currUser', (req, res) => {
 // CREATE
 app.post('/newEmail', (req, res) => {
   const email = req.body;
-  console.log('****before***',email)
-  email.from = loggedInUser.userEmail;
-  email.isTrashed = false;
-  email.isImportant = false;
-  email.isRead = false;
-  email.isSent = true;
-  email.id = loggedInUser.emails.length+1;
-  console.log('****************',email);
-  loggedInUser.emails.push(email);
   var recieverUser = getUserByEmail(email.to);
-  var sentEmail = Object.assign({}, email);
-  sentEmail.isSent = false;
-  sentEmail.id = recieverUser.emails.length+1;
-  recieverUser.emails.push(sentEmail);
-  res.json({ msg: 'email was sent!' });
+  if (recieverUser) {
+    email.from = loggedInUser.userEmail;
+    email.isTrashed = false;
+    email.isImportant = false;
+    email.isRead = false;
+    email.isSent = true;
+    email.id = loggedInUser.emails.length + 1;
+    loggedInUser.emails.push(email);
+    // var recieverUser = getUserByEmail(email.to);
+    var sentEmail = Object.assign({}, email);
+    sentEmail.isSent = false;
+    sentEmail.id = recieverUser.emails.length + 1;
+    recieverUser.emails.push(sentEmail);
+    res.json({ msg: 'email was sent!' });
+  } else { res.status(777).send('email doesnt exist!')
+    }
 })
 
 // UPDATE - trashMail

@@ -117,7 +117,7 @@ function sendEmail(email) {
             console.log(response);
         })
         .catch(function (error) {
-            console.log(error);
+            alert('No such email in our records. email wasnt sent.');
         });
 }
 
