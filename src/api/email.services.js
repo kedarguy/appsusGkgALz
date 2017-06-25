@@ -67,7 +67,7 @@ function logInAttempt(emailAddress, pass) {
             return response.data.loggedInUser
         })
         .catch(function (error) {
-            console.log(error);
+            alert(error.response.data)
         });
 }
 function logOutAttempt() {
@@ -87,7 +87,7 @@ function CreateNewUserAttempt(emailAddress, pass) {
             return response.data.loggedInUser
         })
         .catch(function (error) {
-            console.log(error);
+            alert(error.response.data);
         });
 }
 
@@ -131,7 +131,7 @@ function sendEmail(email) {
             return response.data.loggedInUser;
         })
         .catch(function (error) {
-            alert('No such email in our records. email wasnt sent.');
+            alert(error.response.data);
         });
 }
 

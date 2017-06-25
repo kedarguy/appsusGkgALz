@@ -18,12 +18,12 @@
           <img src="../../materials/Faumail/Menu.png"></template>
         <el-menu-item-group title="inbox">
           <el-menu-item index="1-4">All</el-menu-item>
-          <el-menu-item index="1-1">Unread</el-menu-item>
-          <el-menu-item index="1-2">Read</el-menu-item>
-          <el-menu-item index="1-3">Important</el-menu-item>
+          <el-menu-item index="1-1">Unread {{unreadEmails}}</el-menu-item>
+          <el-menu-item index="1-2">Read {{readEmails}}</el-menu-item>
+          <el-menu-item index="1-3">Important {{importantEmails}}</el-menu-item>
         </el-menu-item-group>
-        <el-menu-item index="2">Sent</el-menu-item>
-        <el-menu-item index="3">Trash</el-menu-item>
+        <el-menu-item index="2">Sent {{sentEmails}}</el-menu-item>
+        <el-menu-item index="3">Trash {{trashedEmails}}</el-menu-item>
         <el-menu-item @click="logOut()" index="4">logout</el-menu-item>
       </el-submenu>
     </el-menu>
@@ -35,10 +35,16 @@
 
 export default {
   name: 'email-nav',
+  props: ['emails'],
   data() {
     return {
       activeIndex: '1',
-      activeIndex2: '1'
+      activeIndex2: '1',
+      unreadEmails: this.emails.filter(function(email) { return email.isRead === false}).length,
+      readEmails: this.emails.filter(function(email) { return email.isRead === true}).length,
+      importantEmails: this.emails.filter(function(email) { return email.isImportant === true}).length,
+      trashedEmails: this.emails.filter(function(email) { return email.isTrashed === true}).length,
+      sentEmails: this.emails.filter(function(email) { return email.isSent === true}).length,
     };
   },
   methods: {
@@ -91,9 +97,10 @@ export default {
   background-color: lightblue;
   border: 2px solid black;
 }
-
+.el-menu-item {
+  padding: 20;
+}
 img {
-  width: 50px;
-  padding: 10px 10px;
+  width: 1px;
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
-  <div class="email-preview"> 
+  <div class="email-preview">
     <div v-if="email">
       <div class="header">
         <div class="subject">
+          <span>Subject: </span>
           <h2>{{email.subject}}</h2>
         </div>
         <div class="from">
           <span>from: </span>
           <h3>{{email.from}}</h3>
-          <span></span>
         </div>
       </div>
       <div class="content">
@@ -19,13 +19,16 @@
           <img src="../../materials/Faumail/reply.png">
         </button>
         <button @click="toggleTags('read')" v-model="markRead">
-          <img src="../../materials/Faumail/mark-as-read.png">
+          <img v-if="!this.email.isRead" src="../../materials/Faumail/mark-as-read.png" >
+          <img v-else src="../../materials/Faumail/mark-as-unread.png">
         </button>
         <button @click="toggleTags('trash')" v-model="trashedEmail">
-          <img src="../../materials/Faumail/trash.png">
+          <img v-if="!this.email.isTrashed" src="../../materials/Faumail/trash.png">
+          <img v-else src="../../materials/Faumail/recover-mail.png">
         </button>
         <button @click="toggleTags('important')" v-model="markImportant">
-          <img src="../../materials/Faumail/important.png">
+          <img v-if="!this.email.isImportant" src="../../materials/Faumail/important.png">
+          <img v-else src="../../materials/Faumail/notimportant.png">
         </button>
       </div>
     </div>
@@ -105,7 +108,8 @@ export default {
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 .email-preview {
-  width: 60vw;
+  width: 63vw;
+  min-height: 83.2vh;
 }
 
 .buttons {
@@ -126,23 +130,32 @@ export default {
 
 .header {
   background-color: #007aff;
-  text-align: center;
-
-  .from {
+  padding-left: 5vw;
+  .subject {
+    padding-left: 1.25vw;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
     align-items: center;
-
     span {
       color: #74a9ff;
-      font-size: 16px;
+      font-size: 26px;
     }
   }
-  h2,
+  .from {
+    padding-left: 1.25vw;
+    display: flex;
+    align-items: center;
+    span {
+      color: #74a9ff;
+      font-size: 26px;
+    }
+  }
+  h2 {
+    padding-left: 4vw;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+  }
   h3 {
-    padding: 40px 20px;
-    margin: 0;
+    padding-left: 6.3vw;
     font-family: 'Montserrat', sans-serif;
     color: white;
   }

@@ -3,7 +3,7 @@
     <email-login v-if="!currUser" @loginInit="logIn" @createUserInit="createUser"></email-login>
     <section class="after-log-in" v-if="currUser">
       <div class="main">
-      <email-nav class="email-nav" @filterTags="applyNewEmailsFilter" @logOutInit="logOut">
+      <email-nav class="email-nav" @filterTags="applyNewEmailsFilter" @logOutInit="logOut" :emails="filteredEmails">
       </email-nav>
         <email-list @updatePreviewEmail="updatePreviewEmail" :emails="filteredEmails" @composeEmail="composeNewEmail"> </email-list>
         <section>

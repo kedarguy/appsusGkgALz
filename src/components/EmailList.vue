@@ -4,12 +4,10 @@
       <button class="compose-email" @click="composeEmail()">Compose New Email </button>
     </div>
     <ul>
-      <li v-for="currEmail in emails" @click="selectEmail(currEmail)"
+      <li v-for="(currEmail,idx) in emails" @click="selectEmail(currEmail,idx)" :key="idx" :class="{'selectedClass': idx === selectedEmail}"
                                                                   
       >
-        <div class="single-email" 
-        
-        >
+        <div class="single-email" >
           <img src="../../materials/Faumail/photoIcon.png">
           <div class="content-cont">
             <div class="subject">
@@ -22,10 +20,12 @@
         </div>
       </li>
     </ul>
+    </div>
   </div>
 </template>
 
 <script>
+// v-bind:class="{selectedClass:selectedEmail}"
 import EmailService from '../api/email.services'
 
 export default {
@@ -34,12 +34,13 @@ export default {
   data() {
     return {
       currUser: null,
-
+      selectedEmail: null,
     }
   },
   methods: {
-    selectEmail(email) {
-      console.log('emiting email')
+    selectEmail(email,idx) {
+      this.selectedEmail = idx;
+      console.log('emiting email',this.selectedEmail)
       this.$emit('updatePreviewEmail', email);
     },
     composeEmail() {
@@ -64,7 +65,8 @@ export default {
 
 .email-list {
   background-color: white;
-  width: 25vw;
+  width: 100%;
+  height: 83.2vh;
   border: 1px solid black;
   font-family: 'Montserrat', sans-serif;
 }
@@ -83,7 +85,6 @@ ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
   margin: 40px;
 
@@ -120,4 +121,9 @@ ul {
 .active {
   background-color: #ff2d55;
 }
+
+.selectedClass {
+  box-sizing: border-box;
+  outline:3px solid cornflowerblue;
+  }
 </style>

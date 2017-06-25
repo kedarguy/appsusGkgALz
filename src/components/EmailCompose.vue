@@ -13,7 +13,7 @@
       <el-input type="textarea" :rows="10" v-model="emailToEdit.content" placeholder="content"></el-input>
       <button class="send-button" @click="sendEmail()">Send</button>
       <button class="delete-button" @click="discardEmail()">
-        <img src="../../materials/Faumail/trash.png">
+        Discard Email
       </button>
     </form>
   </div>
@@ -77,6 +77,7 @@ export default {
 label {
   display: block;
   width: 60vw;
+  height: 17.0vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
