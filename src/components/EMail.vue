@@ -2,10 +2,18 @@
   <div class="email">
     <section class="log-in" v-if="!currUser">
       <div class="log-in-cont">
-        <input type="text" placeholder="email" v-model="inputEmailAddress">
-        <input type="text" placeholder="password" v-model="inputPassword">
+        <div class="input-div">
+          <img src="../../materials/Faumail/login-user.png">
+          <input type="text" placeholder="email" v-model="inputEmailAddress">
+        </div>
+        <div class="input-div">
+          <img src="../../materials/Faumail/login-pass.png">
+          <input type="text" placeholder="password" v-model="inputPassword">
+        </div>
         <button @click="logIn()" class="log-in-button"> log-in </button>
-        <button @click="createNewUser()"> create new user </button>
+        <div class="new-account">
+          No account yet? <button @click="createNewUser()"> create a new Account </button>
+        </div>
       </div>
     </section>
     <section class="log-out" v-if="currUser">
@@ -126,12 +134,10 @@ export default {
     //     }
     //   })
     // },
-    logIn() {
-
+    logIn(inputEmailAddress, inputPassword ) {
       console.log('login started');
-
       let tempThis = this;
-      EmailService.logInAttempt(this.inputEmailAddress, this.inputPassword)
+      EmailService.logInAttempt(inputEmailAddress, inputPassword)
         .then(function (tempUser) {
           tempThis.currUser = tempUser;
           tempThis.currPrevEmail = tempThis.filteredEmails[0]
@@ -139,9 +145,7 @@ export default {
         })
     },
     logOut() {
-
       console.log('log out started');
-
       let tempThis = this;
       EmailService.logOutAttempt()
         .then(function (tempUser) {
@@ -150,7 +154,6 @@ export default {
     },
     createNewUser() {
       console.log('createNewUser started');
-
       let tempThis = this;
       EmailService.CreateNewUserAttempt(this.inputEmailAddress, this.inputPassword)
         .then(function (tempUser) {
@@ -185,24 +188,42 @@ export default {
   background-color: #5856d6;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  flex-direction: column;
+  flex-direction: column; 
+  background-image: url(../../materials/Faumail/background_with_logo.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   .log-in-cont {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    max-width: 30vw;
+    margin-bottom: 10vh;
   }
   input {
     background: transparent;
     border: none;
-    border-bottom: 2px solid #7e7de2;
-    margin: 10px 0;
+    max-width: 80%;
     padding: 10px 5px;
     font-family: 'Montserrat', sans-serif;
     color: #ffffff;
     font-size: 20px;
+    &:hover {
+      cursor: text;
+    }
+  }
+
+  .input-div {
+    border-bottom: 2px solid #7e7de2;
+    margin: 10px 0;
+    width: 100%;
+    img {
+      max-height: 20px;
+      max-width: 20%;
+    }
   }
 
 
@@ -217,6 +238,27 @@ export default {
     font-size: 20px;
     width: 100%;
     margin: 10px 0;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .new-account {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    
+    font-size: 14px;
+    button {
+      border: none;
+      background: transparent;
+      color: #5ac8fa;
+      font-size: 14px;
+      font-weight: bold;
+        &:hover {
+      cursor: pointer;
+    }
+    }
   }
 }
 </style>
