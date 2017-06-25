@@ -126,6 +126,8 @@ function sendEmail(email) {
     //     .then(msg => console.log(msg));
    return axios.post(urlNewEmail, email)
         .then(function (response) {
+            console.log('response.data.loggedInUser')
+            console.log(response.data.loggedInUser)
             return response.data.loggedInUser;
         })
         .catch(function (error) {
@@ -133,6 +135,18 @@ function sendEmail(email) {
         });
 }
 
+ function emailsFilter(currUser, tag) {
+      console.log('top comp', tag);
+      if (tag === 'Unread') {
+          return currUser.emails.filter(function (email) { 
+              return email.isRead === false && email.isSent === false && email.isTrashed === false
+            });
+      } 
+      else {
+          return currUser.emails.filter(function (email) { return email[tag] === true });
+        //   this.currPrevEmail = tempFilteredEmails[0];
+      } 
+    }
 
 export default {
     getEmails,
@@ -143,6 +157,7 @@ export default {
     toggleTags,
     logInAttempt,
     logOutAttempt,
-    CreateNewUserAttempt
+    CreateNewUserAttempt,
+    emailsFilter
 
 }

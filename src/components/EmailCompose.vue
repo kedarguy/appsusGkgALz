@@ -46,9 +46,10 @@ export default {
   },
   methods: {
     sendEmail() {
+      const tempThis = this;
       EmailService.sendEmail(this.emailToEdit)
         .then(function (updatedUser) {
-          this.$emit('sendNewEmail', updatedUser)
+          tempThis.$emit('sendNewEmail', updatedUser)
 
         }
         )
