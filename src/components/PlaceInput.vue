@@ -6,5 +6,6 @@
     </label>
 </template>
 
-<script>
+<script lang="scss" scoped>
+    
 </script>

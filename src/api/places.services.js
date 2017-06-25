@@ -24,10 +24,7 @@ function getMarkers() {
 
 // local markers for tests
 function generateTestMarkers() {
-  const markers = [
-    { id: 1, title: 'test1', position: { lat: 10, lng: 10 }, tags: ['tags'] },
-    { id: 2, title: 'test2', position: { lat: 11, lng: 11 }, tags: ['tags'] },
-  ];
+  const markers = [ ];
   return markers;
 }
 
@@ -50,7 +47,8 @@ function saveMarker(lat, lng) {
     id: nextId++,
     title: "",
     position: { lat: lat, lng: lng },
-    tags: ['tags']
+    tags: ['tags', 'places'],
+    name: 'New Location'
   }
   findTitle(marker.position,marker); 
   markers.push(marker);

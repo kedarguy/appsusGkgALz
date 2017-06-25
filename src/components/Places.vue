@@ -1,7 +1,7 @@
 <template>
   <div class="map-container">
-    <div class="search-bar">Add a marker at this place:
-      <gmap-autocomplete placeholder="Search Box" :value="description" @place_changed="setPlace"></gmap-autocomplete>
+    <div class="search-bar">
+      <gmap-autocomplete placeholder="Address Search" :value="description" @place_changed="setPlace"></gmap-autocomplete>
     </div>
     <gmap-map @rightclick="addMarker($event.latLng)" :center="center" :zoom="7" style="width: 100%; height: 400px">
       <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false"></gmap-info-window>
@@ -100,9 +100,18 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .map-container {
   width: 100%;
   /*height: 300px;*/
+}
+
+.search-bar {
+  padding: 40px 40px;
+  text-align: center;
+  input {
+    width: 40vw;
+
+  }
 }
 </style>
