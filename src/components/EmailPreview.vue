@@ -34,12 +34,7 @@ export default {
       markRead: 'Mark as read',
       trashedEmail: "Trash this mail",
       markImportant: "Mark as important",
-      filter: {
-        id: this.email.id,
-        isImportant: this.email.isImportant,
-        isTrashed: this.email.isTrashed,
-        isRead: this.email.isRead
-      }
+      filter: null
     }
   },
   methods: {
@@ -53,6 +48,12 @@ export default {
       this.$emit('replyEmail', this.email);
     },
     toggleTags(tag) {
+      this.filter = {
+        id: this.email.id,
+        isImportant: this.email.isImportant,
+        isTrashed: this.email.isTrashed,
+        isRead: this.email.isRead
+      };
       console.log('before', this.filter);
       switch (tag) {
         case 'important': {

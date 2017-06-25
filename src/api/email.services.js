@@ -119,20 +119,34 @@ function replyEmail(email) {
     console.log("reply email");
 }
 
-//curruntly supporting only one address to send to
+//curruntly supporting only one address at a time
 function sendEmail(email) {
     console.log(email);
     // return $.post(urlNewEmail, 'test')
     //     .then(msg => console.log(msg));
-    axios.post(urlNewEmail, email)
+   return axios.post(urlNewEmail, email)
         .then(function (response) {
-            console.log(response);
+            console.log('response.data.loggedInUser')
+            console.log(response.data.loggedInUser)
+            return response.data.loggedInUser;
         })
         .catch(function (error) {
             alert('No such email in our records. email wasnt sent.');
         });
 }
 
+ function emailsFilter(currUser, tag) {
+      console.log('top comp', tag);
+      if (tag === 'Unread') {
+          return currUser.emails.filter(function (email) { 
+              return email.isRead === false && email.isSent === false && email.isTrashed === false
+            });
+      } 
+      else {
+          return currUser.emails.filter(function (email) { return email[tag] === true });
+        //   this.currPrevEmail = tempFilteredEmails[0];
+      } 
+    }
 
 export default {
     getEmails,
@@ -143,6 +157,7 @@ export default {
     toggleTags,
     logInAttempt,
     logOutAttempt,
-    CreateNewUserAttempt
+    CreateNewUserAttempt,
+    emailsFilter
 
 }

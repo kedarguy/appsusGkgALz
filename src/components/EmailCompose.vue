@@ -46,8 +46,13 @@ export default {
   },
   methods: {
     sendEmail() {
-      EmailService.sendEmail(this.emailToEdit);
-      this.$emit('sendNewEmail');
+      const tempThis = this;
+      EmailService.sendEmail(this.emailToEdit)
+        .then(function (updatedUser) {
+          tempThis.$emit('sendNewEmail', updatedUser)
+
+        }
+        )
     },
     discardEmail() {
       this.$emit('discardEmail');
