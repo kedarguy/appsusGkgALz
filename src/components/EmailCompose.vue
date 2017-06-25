@@ -1,11 +1,20 @@
 <template>
   <div class="email-compose">
     <form>
-      <input type="text" v-model="emailToEdit.to" placeholder="to" :disabled="addressToSend">
-      <input type="text" v-model="emailToEdit.subject" placeholder="subject">
+      <div class="header">
+        <label>To:
+          <input type="text" v-model="emailToEdit.to" :disabled="addressToSend">
+        </label>
+        <label>Subject:
+          <input type="text" v-model="emailToEdit.subject">
+        </label>
+  
+      </div>
       <el-input type="textarea" :rows="10" v-model="emailToEdit.content" placeholder="content"></el-input>
-      <button @click="sendEmail()">Send</button>
-      <button @click="discardEmail()">Discard</button>
+      <button class="send-button" @click="sendEmail()">Send</button>
+      <button class="delete-button" @click="discardEmail()">
+        <img src="../../materials/Faumail/trash.png">
+      </button>
     </form>
   </div>
 </template>
@@ -63,14 +72,45 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.email-preview {
-  background-color: lightgrey;
-  border: 2px solid black;
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+label {
+  display: block;
+  width: 60vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
-input {
-  display: block;
-  width: 70vw;
+.header {
+  background-color: #5856d6;
+  text-align: center;
+  padding: 40px 20px;
+  color: white;
+  input {
+    width: 80%;
+    padding: 10px 5px;
+    margin: 5px;
+    font-family: 'Montserrat', sans-serif;
+    background: transparent;
+    color: white;
+  }
 }
+
+button {
+  width: 45%;
+  padding: 20px 50px;
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+  font-weight: bold;
+  img {
+    width: 20px;
+  }
+}
+
+.send-button {}
 </style>

@@ -137,7 +137,11 @@ function sendEmail(email) {
 
  function emailsFilter(currUser, tag) {
       console.log('top comp', tag);
-      if (tag === 'Unread') {
+      if (tag === 'All') {
+          return currUser.emails.filter(function (email) { 
+              return email.isSent === false && email.isTrashed === false
+            });
+      }  else if (tag === 'Unread') {
           return currUser.emails.filter(function (email) { 
               return email.isRead === false && email.isSent === false && email.isTrashed === false
             });
