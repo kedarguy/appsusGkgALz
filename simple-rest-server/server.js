@@ -30,10 +30,10 @@ let shuki = {
   userEmail: 'shuki@shuki.com',
   pass: 1234,
   emails: [
-    { id: 1, from: puki.userEmail, subject: '1', content: '1', isTrashed: false, isImportant: false, isRead: false, isSent: false },
-    { id: 2, from: puki.userEmail, subject: '2', content: '2', isTrashed: false, isImportant: false, isRead: false, isSent: false },
-    { id: 3, from: puki.userEmail, subject: '3', content: '3', isTrashed: false, isImportant: false, isRead: false, isSent: false },
-    { id: 4, from: puki.userEmail, subject: '4', content: '4', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 1, from: puki.userEmail, subject: 'subject 1', content: 'What\'s the deal with your family? Got any siblings?" She like, \"I have a brother,\" I\'m like, \"Oh, what he do?"', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 2, from: puki.userEmail, subject: 'subject 2', content: 'While we on the topic, I been actually thinkin\' about some shit About the Army and Navy What if tomorrow is the day That the fucking aliens came', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 3, from: puki.userEmail, subject: 'subject 3', content: 'Like, would we even be able to fuck with their shit? Like, do we got the type of weaponry to fuck with their ships?', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 4, from: puki.userEmail, subject: 'subject 4', content: 'Or could we do some shit to be making they heart race? Granted I don\'t know the alien heart', isTrashed: false, isImportant: false, isRead: false, isSent: false },
   ]
 }
 
