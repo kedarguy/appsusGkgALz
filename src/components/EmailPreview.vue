@@ -1,5 +1,5 @@
 <template>
-  <div class="email-preview">
+  <div class="email-preview"> 
     <div v-if="email">
       <div class="header">
         <div class="subject">
