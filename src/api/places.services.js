@@ -45,18 +45,37 @@ function deleteMarker(marker) {
 }
 
 function saveMarker(lat, lng) {
+ 
   const marker = {
     id: nextId++,
-    title: 'Untitled marker',
+    title: "",
     position: { lat: lat, lng: lng },
     tags: ['tags']
   }
+  findTitle(marker.position,marker); 
   markers.push(marker);
+}
+
+function findTitle(latlng,marker) {
+  var geocoder = new google.maps.Geocoder;
+  var infowindow = new google.maps.InfoWindow;
+  geocoder.geocode({ 'location': latlng }, function (results, status) {
+    if (status === 'OK') {
+      if (results[1]) {
+        marker.title = (results[1].formatted_address);
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
 }
 
 function changeMarkerPos(marker, lat, lng) {
   marker.position.lat = lat;
   marker.position.lng = lng;
+  findTitle(marker.position,marker);   
 }
 
 

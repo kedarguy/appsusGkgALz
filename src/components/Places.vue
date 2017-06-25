@@ -1,5 +1,8 @@
 <template>
   <div class="map-container">
+    <div class="search-bar">Add a marker at this place:
+      <gmap-autocomplete placeholder="Search Box" :value="description" @place_changed="setPlace"></gmap-autocomplete>
+    </div>
     <gmap-map @rightclick="addMarker($event.latLng)" :center="center" :zoom="7" style="width: 100%; height: 400px">
       <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false"></gmap-info-window>
       <gmap-marker v-if="markers.length > 0" :key="idx" v-for="(marker, idx) in markers" :position="marker.position" :clickable="true" :draggable="true" @click="toggleInfoWindow(marker,idx)" @dragend="changeMarkerPosition($event.latLng,marker,idx)"></gmap-marker>
@@ -37,6 +40,7 @@ export default {
     return {
       center: { lat: 10.0, lng: 10.0 },
       markers: [],
+      description: '',
       infoContent: '',
       infoWindowPos: {
         lat: 0,
@@ -80,6 +84,14 @@ export default {
     },
     removeMarker(marker) {
       PlacesServices.removeMarker(marker);
+    },
+    setPlace(place) {
+      this.center = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+      this.description = null;
+      PlacesServices.saveMarker(this.center.lat, this.center.lng)
     }
   }
 }
@@ -93,5 +105,4 @@ export default {
   width: 100%;
   /*height: 300px;*/
 }
-
 </style>
