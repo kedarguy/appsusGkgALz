@@ -1,31 +1,23 @@
 <template>
   <div class="map-container">
-     <gmap-map
-        :center="center"
-        :zoom="7"
-        style="width: 1000px; height: 400px"
-     >
-    <gmap-marker
-      :key="index"
-      v-for="(m, index) in markers"
-      :position="m.position"
-      :clickable="true"
-      :draggable="true"
-      @click="center=m.position"
-      @dragend="getMarkerPosition($event.latLng)"
-    ></gmap-marker>
-  </gmap-map>
-  first: {{markers[0].position}}
-  second: {{markers[1].position}}
-  <map-list></map-list>
+    <div class="search-bar">Add a marker at this place:
+      <gmap-autocomplete placeholder="Search Box" :value="description" @place_changed="setPlace"></gmap-autocomplete>
+    </div>
+    <gmap-map @rightclick="addMarker($event.latLng)" :center="center" :zoom="7" style="width: 100%; height: 400px">
+      <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false"></gmap-info-window>
+      <gmap-marker v-if="markers.length > 0" :key="idx" v-for="(marker, idx) in markers" :position="marker.position" :clickable="true" :draggable="true" @click="toggleInfoWindow(marker,idx)" @dragend="changeMarkerPosition($event.latLng,marker,idx)"></gmap-marker>
+    </gmap-map>
+    <place-list :markers="markers" @removeMarker="removeMarker"></place-list>
   </div>
 </template>
 
 
     
 <script>
-import MapList from '@/components/MapList'
+import PlaceList from '@/components/placeList'
+
 import * as VueGoogleMaps from 'vue2-google-maps';
+import PlacesServices from '../api/places.services';
 import Vue from 'vue';
 
 Vue.use(VueGoogleMaps, {
@@ -38,37 +30,70 @@ Vue.use(VueGoogleMaps, {
 export default {
   name: 'google-map',
   components: {
-    MapList
+    PlaceList
   },
-  data () {
-      return {
-        center: {lat: 10.0, lng: 10.0},
-        markers: [{
-          position: {
-            lat: 10.0, 
-            lng: 10.0
-          },
-          infoText: 'marker 1'
-         }, {
-          position: {
-            lat: 11.0, 
-            lng: 11.0
-          },
-          infoText: 'marker 2'
-        }]
+  created() {
+    PlacesServices.getMarkers().then(markers => this.markers = markers)
+    console.log(this.markers);
+  },
+  data() {
+    return {
+      center: { lat: 10.0, lng: 10.0 },
+      markers: [],
+      description: '',
+      infoContent: '',
+      infoWindowPos: {
+        lat: 0,
+        lng: 0
+      },
+      infoOptions: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      infoWinOpen: false,
+    }
+  },
+  methods: {
+    addMarker(latLng) {
+      let currLat = latLng.lat();
+      let currLng = latLng.lng();
+      PlacesServices.saveMarker(currLat, currLng);
+    },
+    // newTitle () {
+    //   this.infoWinOpen = false; 
+    // },
+    changeMarkerPosition(latLng, marker, idx) {
+      let currLat = latLng.lat();
+      let currLng = latLng.lng();
+      PlacesServices.changeMarkerPos(marker, currLat, currLng);
+    },
+    toggleInfoWindow(marker, idx) {
+      this.infoWindowPos = marker.position;
+      this.infoContent = marker.title;
+      //check if its the same marker that was selected if yes toggle
+      if (this.currentMidx == idx) {
+        this.infoWinOpen = !this.infoWinOpen;
+      }
+      //if different marker set infowindow to open and reset current marker index
+      else {
+        this.infoWinOpen = true;
+        this.currentMidx = idx;
       }
     },
-    methods: {
-        addMarker() {
-          console.log('adding marker');
-        },
-        getMarkerPosition(ans) {
-          console.log(ans.lat());
-          console.log(ans.lng());
-          this.markers[0].position.lat = ans.lat();
-          this.markers[0].position.lng = ans.lng();
-        }
+    removeMarker(marker) {
+      PlacesServices.removeMarker(marker);
+    },
+    setPlace(place) {
+      this.center = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+      this.description = null;
+      PlacesServices.saveMarker(this.center.lat, this.center.lng)
     }
+  }
 }
 
 
@@ -77,14 +102,7 @@ export default {
 
 <style scoped>
 .map-container {
-    /*width: 500px;*/
-    /*height: 300px;*/
-  }
-
-  .map {
-    height:100%;
-    width:100%;
-  }
-
-
+  width: 100%;
+  /*height: 300px;*/
+}
 </style>
