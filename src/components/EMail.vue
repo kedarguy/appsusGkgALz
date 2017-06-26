@@ -48,33 +48,39 @@ export default {
 
   computed: {
     filteredEmails() {
+      console.log('curr user from filtered emails');
+      console.log(this.currUser);
       this.currUser;
       this.isComposeMode;
-      return EmailService.emailsFilter(this.currUser, this.tagToFilter);
+      if (this.currUser) {
+        return EmailService.emailsFilter(this.currUser, this.tagToFilter);
+      } else {
+        return null
+      }
     },
     allInbox() {
-        let filtEmail = EmailService.emailsFilter(this.currUser, 'All');
-        return filtEmail.length;
+      let filtEmail = EmailService.emailsFilter(this.currUser, 'All');
+      return filtEmail.length;
     },
     unreadEmails() {
-        let filtEmail = EmailService.emailsFilter(this.currUser, 'Unread');
-        return filtEmail.length;
+      let filtEmail = EmailService.emailsFilter(this.currUser, 'Unread');
+      return filtEmail.length;
     },
     readEmails() {
-        let filtEmail = EmailService.emailsFilter(this.currUser, 'isRead');
-        return filtEmail.length;
-        },
+      let filtEmail = EmailService.emailsFilter(this.currUser, 'isRead');
+      return filtEmail.length;
+    },
     importantEmails() {
       let filtEmail = EmailService.emailsFilter(this.currUser, 'isImportant');
-        return filtEmail.length;
+      return filtEmail.length;
     },
-    trashedEmails () {
+    trashedEmails() {
       let filtEmail = EmailService.emailsFilter(this.currUser, 'isTrashed');
-        return filtEmail.length;
+      return filtEmail.length;
     },
     sentEmails() {
       let filtEmail = EmailService.emailsFilter(this.currUser, 'isSent');
-        return filtEmail.length;
+      return filtEmail.length;
     }
   },
 
@@ -91,6 +97,7 @@ export default {
       this.currPrevEmail.isImportant = updatedEmailProps.isImportant;
       this.currPrevEmail.isRead = updatedEmailProps.isRead;
       this.currPrevEmail.isTrashed = updatedEmailProps.isTrashed;
+      this.currPrevEmail = this.filteredEmails[0];
     },
     applyNewEmailsFilter(tag) {
       this.tagToFilter = tag;
@@ -103,7 +110,7 @@ export default {
     },
     sendEmail(updatedUser) {
       this.toggleComposeMode();
-      this.currUser = updatedUser;
+      if (updatedUser) this.currUser = updatedUser;
     },
     discardEmail() {
       this.toggleComposeMode();
@@ -116,9 +123,15 @@ export default {
       let tempThis = this;
       EmailService.logInAttempt(inputEmailAddress, inputPassword)
         .then(function (tempUser) {
+          console.log('tempThis.currUser before login');
+          console.log(tempThis.currUser);
+          console.log(tempThis.filteredEmails);
           tempThis.currUser = tempUser;
+          console.log('tempThis.currUser after login');
+          console.log(tempThis.currUser);
+          console.log('tempThis.filteredEmails after login');
+          console.log(tempThis.filteredEmails);
           tempThis.currPrevEmail = tempThis.filteredEmails[0]
-
         })
     },
     logOut() {
@@ -127,6 +140,9 @@ export default {
       EmailService.logOutAttempt()
         .then(function (tempUser) {
           tempThis.currUser = null;
+          tempThis.filteredEmails = null;
+          console.log('tempThis.currUser after logout');
+          console.log(tempThis.currUser);
         })
     },
     createUser(inputEmailAddress, inputPassword) {
@@ -134,8 +150,7 @@ export default {
       EmailService.CreateNewUserAttempt(inputEmailAddress, inputPassword)
         .then(function (tempUser) {
           tempThis.currUser = tempUser;
-        }
-        )
+        })
     }
   },
   components: {

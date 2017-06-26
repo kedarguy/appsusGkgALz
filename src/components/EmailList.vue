@@ -4,10 +4,8 @@
       <button class="compose-email" @click="composeEmail()">Compose New Email </button>
     </div>
     <ul>
-      <li v-for="(currEmail,idx) in emails" @click="selectEmail(currEmail,idx)" :key="idx" :class="{'selectedClass': idx === selectedEmail}"
-                                                                  
-      >
-        <div class="single-email" >
+      <li v-for="(currEmail,idx) in emails" @click="selectEmail(currEmail,idx)" :key="idx">
+        <div class="single-email" :class="{'selectedClass': idx === selectedEmail}">
           <img src="../../materials/Faumail/photoIcon.png">
           <div class="content-cont">
             <div class="subject">
@@ -20,7 +18,7 @@
         </div>
       </li>
     </ul>
-    </div>
+  </div>
   </div>
 </template>
 
@@ -33,14 +31,16 @@ export default {
   props: ['emails'],
   data() {
     return {
-      currUser: null,
       selectedEmail: null,
     }
   },
+  created() {
+    this.selectedEmail = 0; //first email choose
+  },
   methods: {
-    selectEmail(email,idx) {
+    selectEmail(email, idx) {
       this.selectedEmail = idx;
-      console.log('emiting email',this.selectedEmail)
+      console.log('emiting email', this.selectedEmail)
       this.$emit('updatePreviewEmail', email);
     },
     composeEmail() {
@@ -66,7 +66,7 @@ export default {
 .email-list {
   background-color: white;
   width: 100%;
-  height: 83.2vh;
+  border: 1px solid black;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -85,7 +85,7 @@ ul {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  margin: 40px;
+  padding: 7px;
 
   img {
     max-height: 60px;
@@ -107,6 +107,7 @@ ul {
     font-weight: bold;
   }
 }
+
 .subject {
   font-weight: bold;
   font-size: 20px;
@@ -114,7 +115,7 @@ ul {
 }
 
 .from {
-  overflow:  hidden;
+  overflow: hidden;
 }
 
 .active {
@@ -123,6 +124,7 @@ ul {
 
 .selectedClass {
   box-sizing: border-box;
-  outline:3px solid cornflowerblue;
-  }
+  outline: 1px solid black;
+  background-color: cornflowerblue
+}
 </style>

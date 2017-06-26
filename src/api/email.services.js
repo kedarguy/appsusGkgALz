@@ -49,9 +49,7 @@ import axios from 'axios'
 
 function getCurrUser() {
     var prmCurrUser = fetch(urlCurrUser);
-
     return prmCurrUser.then(res => res.json())
-
 }
 
 
@@ -136,8 +134,8 @@ function sendEmail(email) {
 }
 
  function emailsFilter(currUser, tag) {
-      console.log('top comp', tag);
       if (tag === 'All') {
+          
           return currUser.emails.filter(function (email) { 
               return email.isSent === false && email.isTrashed === false
             });

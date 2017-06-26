@@ -31,7 +31,7 @@ let shuki = {
   pass: 1234,
   emails: [
     { id: 1, from: puki.userEmail, subject: 'Lemme Freak', content: 'What\'s the deal with your family? Got any siblings?" She like, \"I have a brother,\" I\'m like, \"Oh, what he do?"', isTrashed: false, isImportant: false, isRead: false, isSent: false },
-    { id: 2, from: puki.userEmail, subject: 'Classic Male Pregame', content: 'While we on the topic, I been actually thinkin\' about some shit About the Army and Navy What if tomorrow is the day That the fucking aliens came', isTrashed: false, isImportant: false, isRead: false, isSent: false },
+    { id: 2, from: puki.userEmail, subject: 'Classic Male', content: 'While we on the topic, I been actually thinkin\' about some shit About the Army and Navy What if tomorrow is the day That the fucking aliens came', isTrashed: false, isImportant: false, isRead: false, isSent: false },
     { id: 3, from: puki.userEmail, subject: 'Save Dat Money', content: 'Like, would we even be able to fuck with their shit? Like, do we got the type of weaponry to fuck with their ships?', isTrashed: false, isImportant: false, isRead: false, isSent: false },
     { id: 4, from: puki.userEmail, subject: 'Professional Rapper', content: 'Or could we do some shit to be making they heart race? Granted I don\'t know the alien heart', isTrashed: false, isImportant: false, isRead: false, isSent: false },
   ]
@@ -76,10 +76,12 @@ app.get('/currUser', (req, res) => {
 // CREATE
 app.post('/newEmail', (req, res) => {
   const email = req.body;
-  const recieverUserEmailAddress = email.to.toLowerCase();
-  console.log('recieverUserEmailAddress lower case');
-  console.log(recieverUserEmailAddress);
+  console.log('********',email);
+  if (email.to !== null) {
+  var recieverUserEmailAddress = email.to.toLowerCase();
   var recieverUser = getUserByEmail(recieverUserEmailAddress);
+  }
+  console.log(recieverUser)
   if (recieverUser) {
     email.from = loggedInUser.userEmail;
     email.isTrashed = false;
@@ -96,6 +98,7 @@ app.post('/newEmail', (req, res) => {
     recieverUser.emails.push(sentEmail);
     res.json({ loggedInUser });
   } else {
+    email.from = loggedInUser.userEmail;
     res.status(777).send('email doesnt exist!')
   }
 })

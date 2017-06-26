@@ -24,7 +24,7 @@
         </el-menu-item-group>
         <el-menu-item index="2">Sent {{sentEmails}}</el-menu-item>
         <el-menu-item index="3">Trash {{trashedEmails}}</el-menu-item>
-        <el-menu-item @click="logOut()" index="4">logout</el-menu-item>
+        <el-menu-item @click="logOut()" index="4">Logout</el-menu-item>
       </el-submenu>
     </el-menu>
   
