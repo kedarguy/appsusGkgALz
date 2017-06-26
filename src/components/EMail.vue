@@ -3,8 +3,8 @@
     <email-login v-if="!currUser" @loginInit="logIn" @createUserInit="createUser"></email-login>
     <section class="after-log-in" v-if="currUser">
       <div class="main">
-      <email-nav class="email-nav" @filterTags="applyNewEmailsFilter" @logOutInit="logOut" :emails="filteredEmails">
-      </email-nav>
+        <email-nav class="email-nav" @filterTags="applyNewEmailsFilter" @logOutInit="logOut" :allInbox="allInbox" :unreadEmails="unreadEmails" :readEmails="readEmails" :importantEmails="importantEmails" :trashedEmails="trashedEmails" :sentEmails="sentEmails">
+        </email-nav>
         <email-list @updatePreviewEmail="updatePreviewEmail" :emails="filteredEmails" @composeEmail="composeNewEmail"> </email-list>
         <section>
           <email-preview v-if="!isComposeNewMode" :email="currPrevEmail" @toggleTags="emailToggleTags" @replyEmail="replyEmail"> </email-preview>
@@ -45,11 +45,36 @@ export default {
 
     }
   },
+
   computed: {
     filteredEmails() {
       this.currUser;
       this.isComposeMode;
       return EmailService.emailsFilter(this.currUser, this.tagToFilter);
+    },
+    allInbox() {
+        let filtEmail = EmailService.emailsFilter(this.currUser, 'All');
+        return filtEmail.length;
+    },
+    unreadEmails() {
+        let filtEmail = EmailService.emailsFilter(this.currUser, 'Unread');
+        return filtEmail.length;
+    },
+    readEmails() {
+        let filtEmail = EmailService.emailsFilter(this.currUser, 'isRead');
+        return filtEmail.length;
+        },
+    importantEmails() {
+      let filtEmail = EmailService.emailsFilter(this.currUser, 'isImportant');
+        return filtEmail.length;
+    },
+    trashedEmails () {
+      let filtEmail = EmailService.emailsFilter(this.currUser, 'isTrashed');
+        return filtEmail.length;
+    },
+    sentEmails() {
+      let filtEmail = EmailService.emailsFilter(this.currUser, 'isSent');
+        return filtEmail.length;
     }
   },
 
