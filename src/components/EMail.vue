@@ -30,12 +30,11 @@ export default {
   name: 'email-comp',
   data() {
     return {
-      emails: null,
       currUser: null,
       currPrevEmail: null,
       isComposeMode: false,
       isComposeNewMode: false,
-      tagToFilter: 'Unread',
+      tagToFilter: 'All',
       composeNewMail: {
         to: null,
         subject: null,
@@ -48,14 +47,11 @@ export default {
 
   computed: {
     filteredEmails() {
-      console.log('curr user from filtered emails');
-      console.log(this.currUser);
-      this.currUser;
-      this.isComposeMode;
       if (this.currUser) {
-        return EmailService.emailsFilter(this.currUser, this.tagToFilter);
+        var filtered = EmailService.emailsFilter(this.currUser, this.tagToFilter);
+        return filtered;
       } else {
-        return null
+        return [];
       }
     },
     allInbox() {
@@ -121,6 +117,7 @@ export default {
     },
     logIn(inputEmailAddress, inputPassword) {
       let tempThis = this;
+      this.tagToFilter = 'All';
       EmailService.logInAttempt(inputEmailAddress, inputPassword)
         .then(function (tempUser) {
           console.log('tempThis.currUser before login');
@@ -137,6 +134,7 @@ export default {
     logOut() {
       let tempThis = this;
       this.currPrevEmail = null;
+      this.currUser = null;
       EmailService.logOutAttempt()
         .then(function (tempUser) {
           tempThis.currUser = null;
