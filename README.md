@@ -4,7 +4,7 @@
 
 ## Build Setup
 
-``` bash
+
 # install dependencies
 npm install
 
@@ -12,8 +12,16 @@ npm install
 npm run dev
 
 =============================================================================
-Inside simple Rest Server:
+cd\simple-rest-server
+
+## Build Setup
+
+
+# install dependencies
+
 npm install
+
+# serve 
 
 node server.js
 
