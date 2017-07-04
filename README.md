@@ -21,7 +21,7 @@ cd\simple-rest-server
 
 npm install
 
-# serve 
+# serve at localhost:3003
 
 node server.js
 
